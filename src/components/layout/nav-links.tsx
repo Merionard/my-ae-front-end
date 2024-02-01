@@ -13,7 +13,7 @@ const links = [
   { name: "Home", href: "/MyAE/home", icon: Home },
   {
     name: "Invoices",
-    href: "/MyAE/invoice",
+    href: "/invoice",
     icon: Receipt,
   },
   { name: "Customers", href: "/MyAE/customers", icon: UsersRound },
