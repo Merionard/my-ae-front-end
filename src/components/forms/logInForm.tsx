@@ -12,11 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { client } from "@/features/fetchClient";
+import { User } from "@/lib/types";
 
 export const LogInForm = () => {
   const logInSchema = z.object({
     email: z.string().email(),
-    password: z.string().min(5).max(25),
+    password: z.string().min(4).max(25),
   });
 
   const form = useForm<z.infer<typeof logInSchema>>({
@@ -27,8 +29,14 @@ export const LogInForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof logInSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof logInSchema>) {
+    const user = await client(
+      "http://localhost:8080/auth/login",
+      "POST",
+      values,
+      {} as User
+    );
+    console.log(user);
   }
 
   return (
