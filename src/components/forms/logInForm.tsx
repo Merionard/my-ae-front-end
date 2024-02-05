@@ -14,6 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { client } from "@/features/fetchClient";
 import { User } from "@/lib/types";
+import { LOG_IN } from "@/features/urlAPI";
+import { redirect } from "react-router-dom";
+import { setAuthToken } from "@/features/jwtHelper";
 
 export const LogInForm = () => {
   const logInSchema = z.object({
@@ -30,13 +33,9 @@ export const LogInForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof logInSchema>) {
-    const user = await client(
-      "http://localhost:8080/auth/login",
-      "POST",
-      values,
-      {} as User
-    );
-    console.log(user);
+    const user = await client(LOG_IN, "POST", values, {} as User);
+    if (user) setAuthToken(user.token);
+    redirect("/");
   }
 
   return (
