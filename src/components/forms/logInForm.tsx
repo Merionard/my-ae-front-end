@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { User } from "@/const_utils/types";
+import { User } from "@/lib/types";
 import { client } from "@/features/fetchClient";
 import { useLogIn } from "@/features/hooks";
 import { LOG_IN } from "@/features/urlAPI";

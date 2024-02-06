@@ -28,7 +28,7 @@ export const CustomerPage = () => {
       <div className="container mx-auto mt-5">
         <Card>
           <CardHeader>
-            <a href="/MyAE/customers/new" className="flex justify-end">
+            <a href="/customers/new" className="flex justify-end">
               <Button>
                 <PlusCircle size={"sm"} className="mr-2" />
                 Nouveau client

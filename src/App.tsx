@@ -5,6 +5,7 @@ import LogInPage from "./pages/login-page";
 import { InvoicePage } from "./pages/invoice-page";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { CustomerPage } from "./pages/customer-page";
+import { NewCustomerPage } from "./pages/newCustomer-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,6 +21,10 @@ function App() {
         {
           path: "/customers",
           element: <CustomerPage />,
+        },
+        {
+          path: "/customers/new",
+          element: <NewCustomerPage />,
         },
       ],
     },

@@ -21,7 +21,7 @@ import {
 
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { Customer } from "@/const_utils/types";
+import { Customer } from "@/lib/types";
 
 export const columns: ColumnDef<Customer>[] = [
   {

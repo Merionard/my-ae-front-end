@@ -1,4 +1,4 @@
-import { User } from "@/const_utils/types";
+import { User } from "@/lib/types";
 import { useConnectedUserStore } from "./store";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";

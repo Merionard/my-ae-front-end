@@ -1,4 +1,4 @@
-import { User } from "@/const_utils/types";
+import { User } from "@/lib/types";
 import { create } from "zustand";
 
 type UserStore = {
