@@ -1,13 +1,9 @@
-import { useConnectedUserStore } from "@/features/store";
+import { useLogOut } from "@/features/hooks";
 import { LogOut } from "lucide-react";
 import { Button } from "../ui/button";
 
 export const AuthentBtn = () => {
-  const { cleanUser } = useConnectedUserStore();
-  const logOut = () => {
-    cleanUser();
-    window.localStorage.removeItem("auth_token");
-  };
+  const logOut = useLogOut();
 
   return (
     <Button onClick={() => logOut()} variant={"destructive"}>

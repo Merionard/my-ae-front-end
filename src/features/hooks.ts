@@ -7,7 +7,7 @@ export const getAuthToken = () => {
   return window.localStorage.getItem("auth_token");
 };
 
-export const setAuthToken = (token: string) => {
+const setAuthToken = (token: string) => {
   window.localStorage.setItem("auth_token", token);
 };
 
@@ -18,6 +18,15 @@ export const useLogIn = () => {
     setAuthToken(user.token);
   };
   return logIn;
+};
+
+export const useLogOut = () => {
+  const { cleanUser } = useConnectedUserStore();
+  const logOut = () => {
+    cleanUser();
+    window.localStorage.removeItem("auth_token");
+  };
+  return logOut;
 };
 
 export const useIsConnected = () => {
