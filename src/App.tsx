@@ -3,6 +3,7 @@ import { RootLayout } from "./RootLayout";
 import { ErrorPage } from "./error-page";
 import LogInPage from "./pages/login-page";
 import { InvoicePage } from "./pages/invoice-page";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,8 +23,13 @@ function App() {
       element: <LogInPage />,
     },
   ]);
+  const queryClient = new QueryClient();
 
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

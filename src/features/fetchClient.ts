@@ -46,5 +46,5 @@ export const client = async <T>(
   if (result && returnType) {
     return result as T;
   }
-  return null;
+  throw new Error("error on deserialize json");
 };
