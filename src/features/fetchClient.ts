@@ -18,24 +18,22 @@ export const client = async <T>(
 ) => {
   let fetchParam: RequestInit | undefined = undefined;
   if (method === "POST" || method === "DELETE") {
-    fetchParam = url.isSecured
-      ? {
-          method: method,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getAuthToken()}`,
-          },
-          body: JSON.stringify(body),
-        }
-      : {
-          method: method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        };
+    fetchParam = {
+      method: method,
+      body: JSON.stringify(body),
+    };
   }
-  const response = await fetch(url.url, fetchParam);
+  const params = url.isSecured
+    ? {
+        ...fetchParam,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }
+    : { ...fetchParam };
+
+  const response = await fetch(url.url, params);
   if (!response.ok) {
     const msg = await response.text();
     console.log(msg);

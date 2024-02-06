@@ -15,7 +15,7 @@ export const CustomerPage = () => {
     isError,
     isLoading,
     isSuccess,
-  } = useQuery("customers", () => fetchCustomers(1));
+  } = useQuery("customers", () => fetchCustomers());
 
   if (isError) {
     return <h1>error</h1>;

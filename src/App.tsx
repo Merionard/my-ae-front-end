@@ -4,6 +4,7 @@ import { ErrorPage } from "./error-page";
 import LogInPage from "./pages/login-page";
 import { InvoicePage } from "./pages/invoice-page";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { CustomerPage } from "./pages/customer-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -15,6 +16,10 @@ function App() {
         {
           path: "/invoice",
           element: <InvoicePage />,
+        },
+        {
+          path: "/customers",
+          element: <CustomerPage />,
         },
       ],
     },
