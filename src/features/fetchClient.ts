@@ -1,4 +1,4 @@
-import { getAuthToken } from "./jwtHelper";
+import { getAuthToken } from "./hooks";
 import { UrlApi } from "./urlAPI";
 
 type FetchMethod = "GET" | "POST" | "DELETE";

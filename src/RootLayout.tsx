@@ -1,8 +1,10 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "./components/layout/header";
 import SideNav from "./components/layout/sidenav";
+import { useCheckConnection } from "./features/hooks";
 
 export const RootLayout = () => {
+  useCheckConnection();
   return (
     <div className="min-h-screen flex flex-col">
       <Header />

@@ -1,7 +1,3 @@
-import { useForm } from "react-hook-form";
-import { Typography } from "../ui/Typography";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,13 +8,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { User } from "@/const_utils/types";
 import { client } from "@/features/fetchClient";
-import { User } from "@/lib/types";
+import { useLogIn } from "@/features/hooks";
 import { LOG_IN } from "@/features/urlAPI";
-import { redirect } from "react-router-dom";
-import { setAuthToken } from "@/features/jwtHelper";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { Typography } from "../ui/Typography";
+import { useState } from "react";
 
 export const LogInForm = () => {
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const logInSchema = z.object({
     email: z.string().email(),
     password: z.string().min(4).max(25),
@@ -32,15 +34,25 @@ export const LogInForm = () => {
     },
   });
 
+  const navigate = useNavigate();
+  const logIn = useLogIn();
+
   async function onSubmit(values: z.infer<typeof logInSchema>) {
-    const user = await client(LOG_IN, "POST", values, {} as User);
-    if (user) setAuthToken(user.token);
-    redirect("/");
+    try {
+      const user = await client(LOG_IN, "POST", values, {} as User);
+      if (user) {
+        logIn(user);
+        navigate("/");
+      }
+    } catch (error) {
+      setErrorMsg("Identifiants incorrects");
+    }
   }
 
   return (
     <>
       <Typography variant={"h2"}>Bienvenue sur MY AE</Typography>
+      {errorMsg && <Typography variant={"large"}>{errorMsg}</Typography>}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <FormField
