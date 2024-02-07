@@ -12,5 +12,5 @@ export const InvoicePage = () => {
     }
   }, [isConnected, navigate]);
 
-  return <div>invoice-page</div>;
+  return <div className="bg-blue">invoice-page</div>;
 };

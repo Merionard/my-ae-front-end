@@ -21,6 +21,7 @@ export const client = async <T>(
     fetchParam = {
       method: method,
       body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
     };
   }
   const params = url.isSecured
