@@ -4,8 +4,9 @@ import { ErrorPage } from "./error-page";
 import LogInPage from "./pages/login-page";
 import { InvoicePage } from "./pages/invoice-page";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { CustomerPage } from "./pages/customer-page";
-import { NewCustomerPage } from "./pages/newCustomer-page";
+import { CustomerPage } from "./pages/customer/customer-page";
+import { NewCustomerPage } from "./pages/customer/newCustomer-page";
+import { EditCustomerPage } from "./pages/customer/editCustomer-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,6 +26,10 @@ function App() {
         {
           path: "/customers/new",
           element: <NewCustomerPage />,
+        },
+        {
+          path: "/customers/edit/:id",
+          element: <EditCustomerPage />,
         },
       ],
     },

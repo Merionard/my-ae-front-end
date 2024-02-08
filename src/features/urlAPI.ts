@@ -17,10 +17,14 @@ export const CUSTOMERS: UrlApi = {
   url: "http://localhost:8080/customers",
 };
 
-export const fetchCustomers = () => {
+export const fetchAllCustomers = () => {
   return client(CUSTOMERS, "GET", null, {} as Customer[]);
 };
 
 export const postCustomer = (customer: z.infer<typeof customerSchema>) => {
   return client(CUSTOMERS, "POST", customer, {} as Customer);
+};
+
+export const fetchOneCustomer = (customerId: string) => {
+  return client(CUSTOMERS, "GET", null, {} as Customer, undefined, customerId);
 };

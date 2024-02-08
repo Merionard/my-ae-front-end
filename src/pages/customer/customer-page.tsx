@@ -5,7 +5,7 @@ import { PlusCircle } from "lucide-react";
 import { useCheckConnection } from "@/features/hooks";
 import { DataTable } from "@/components/ui/dataTable";
 import { useQuery } from "react-query";
-import { fetchCustomers } from "@/features/urlAPI";
+import { fetchAllCustomers } from "@/features/urlAPI";
 import { columns } from "@/features/dataTable/customerColumnsDatatable";
 
 export const CustomerPage = () => {
@@ -15,7 +15,7 @@ export const CustomerPage = () => {
     isError,
     isLoading,
     isSuccess,
-  } = useQuery("customers", () => fetchCustomers());
+  } = useQuery("customers", () => fetchAllCustomers());
 
   if (isError) {
     return <h1>error</h1>;
