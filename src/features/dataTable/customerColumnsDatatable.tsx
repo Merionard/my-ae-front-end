@@ -19,9 +19,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { Customer } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { Customer } from "@/lib/types";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "sonner";
+import { deleteCustomer } from "../urlAPI";
 
 export const columns: ColumnDef<Customer>[] = [
   {
@@ -65,11 +68,16 @@ export const columns: ColumnDef<Customer>[] = [
 ];
 
 const ActionMenu = (props: { id: number }) => {
-  async function deleteCustomer(customerId: number) {
-    /*   const customer = await deleteCustomerAction(customerId);
-    toast.success("le client " + customer.businessName + " a été supprimé");
-    router.refresh(); */
-    alert(customerId);
+  const queryClient = useQueryClient();
+  const deleteCustomerMutation = useMutation({
+    mutationFn: (customerId: number) => deleteCustomer(customerId.toString()),
+    onSuccess: () => {
+      queryClient.invalidateQueries("customers");
+      toast.success("client supprimé avec succès!");
+    },
+  });
+  function handleDeleteCustomer(customerId: number) {
+    deleteCustomerMutation.mutate(customerId);
   }
 
   return (
@@ -104,7 +112,7 @@ const ActionMenu = (props: { id: number }) => {
             <AlertDialogCancel>Annuler</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
-                deleteCustomer(props.id);
+                handleDeleteCustomer(props.id);
               }}
             >
               Supprimer

@@ -39,7 +39,7 @@ export const LogInForm = () => {
 
   async function onSubmit(values: z.infer<typeof logInSchema>) {
     try {
-      const user = await client(LOG_IN, "POST", values, {} as User);
+      const user = await client(LOG_IN, "POST", {} as User, undefined, values);
       if (user) {
         logIn(user);
         navigate("/");

@@ -18,27 +18,24 @@ export const CUSTOMERS: UrlApi = {
 };
 
 export const fetchAllCustomers = () => {
-  return client(CUSTOMERS, "GET", null, {} as Customer[]);
+  return client(CUSTOMERS, "GET", {} as Customer[]);
 };
 
 export const postCustomer = (customer: z.infer<typeof customerSchema>) => {
-  return client(CUSTOMERS, "POST", customer, {} as Customer);
+  return client(CUSTOMERS, "POST", {} as Customer, undefined, customer);
 };
 
 export const fetchOneCustomer = (customerId: string) => {
-  return client(CUSTOMERS, "GET", null, {} as Customer, undefined, customerId);
+  return client(CUSTOMERS, "GET", {} as Customer, customerId);
 };
 
 export const updateCustomer = (
   customer: z.infer<typeof customerSchema>,
   customerId?: string
 ) => {
-  return client(
-    CUSTOMERS,
-    "PUT",
-    customer,
-    {} as Customer,
-    undefined,
-    customerId
-  );
+  return client(CUSTOMERS, "PUT", {} as Customer, customerId, customer);
+};
+
+export const deleteCustomer = (customerId: string) => {
+  return client(CUSTOMERS, "DELETE", {} as Customer, customerId);
 };

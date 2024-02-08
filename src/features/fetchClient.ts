@@ -12,10 +12,10 @@ type FetchMethod = "GET" | "POST" | "DELETE" | "PUT";
 export const client = async <T>(
   urlApi: UrlApi,
   method: FetchMethod,
+  returnType: T,
+  pathParam?: string,
   body?: unknown,
-  returnType?: T,
-  errorMsg = "Une erreur est survenue",
-  pathParam?: string
+  errorMsg = "Une erreur est survenue"
 ) => {
   let fetchParam: RequestInit | undefined = undefined;
   if (method === "POST" || method === "DELETE" || method === "PUT") {
@@ -34,7 +34,6 @@ export const client = async <T>(
         },
       }
     : { ...fetchParam };
-  console.log(params);
 
   const fetchURL = pathParam ? urlApi.url + `/${pathParam}` : urlApi.url;
 
@@ -44,10 +43,10 @@ export const client = async <T>(
     console.log(msg);
     throw new Error(errorMsg);
   }
+
   const result = await response.json();
-  console.log(result);
   if (result && returnType) {
     return result as T;
   }
-  throw new Error("error on deserialize json");
+  return {} as T;
 };
