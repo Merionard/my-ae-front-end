@@ -22,8 +22,8 @@ export const customerSchema = z.object({
   }),
   siren: z.string().length(9).optional(),
   contact: customerContactSchema.nullable().optional(),
-  firstAddress: customerAddressSchema.optional(),
-  address: z.array(customerAddressSchema),
+  firstAddress: customerAddressSchema.optional().nullable(),
+  addresses: z.array(customerAddressSchema),
 });
 
 export type Etablissement = {

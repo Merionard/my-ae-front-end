@@ -28,3 +28,17 @@ export const postCustomer = (customer: z.infer<typeof customerSchema>) => {
 export const fetchOneCustomer = (customerId: string) => {
   return client(CUSTOMERS, "GET", null, {} as Customer, undefined, customerId);
 };
+
+export const updateCustomer = (
+  customer: z.infer<typeof customerSchema>,
+  customerId?: string
+) => {
+  return client(
+    CUSTOMERS,
+    "PUT",
+    customer,
+    {} as Customer,
+    undefined,
+    customerId
+  );
+};

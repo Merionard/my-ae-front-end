@@ -20,7 +20,7 @@ import { CustomerContactForm } from "./customerContactForm";
 import { Etablissement, customerSchema } from "./customerSchemaAndTypes";
 import { CustomerComboBox } from "./searchCustomerComboBox";
 import { useMutation, useQueryClient } from "react-query";
-import { postCustomer } from "@/features/urlAPI";
+import { postCustomer, updateCustomer } from "@/features/urlAPI";
 import { useNavigate } from "react-router-dom";
 
 export function CustomerForm(props: {
@@ -30,7 +30,7 @@ export function CustomerForm(props: {
     props.customer != null && props.customer.contact != null
   );
   const [showAddress, setShowAddress] = useState(
-    props.customer != null && props.customer.address != null
+    props.customer != null && props.customer.addresses != null
   );
 
   const form = useForm<z.infer<typeof customerSchema>>({
@@ -40,10 +40,10 @@ export function CustomerForm(props: {
       id: props.customer ? props.customer.id : undefined,
       siren: props.customer ? props.customer.siren : undefined,
       contact: props.customer ? props.customer.contact : undefined,
-      address: props.customer ? props.customer.address : [],
+      addresses: props.customer ? props.customer.addresses : [],
       firstAddress: props.customer
-        ? props.customer.address.length > 0
-          ? props.customer.address[0]
+        ? props.customer.addresses.length > 0
+          ? props.customer.addresses[0]
           : undefined
         : undefined,
     },
@@ -63,25 +63,19 @@ export function CustomerForm(props: {
 
   const updateCustomerMutation = useMutation({
     mutationFn: (customer: z.infer<typeof customerSchema>) =>
-      postCustomer(customer),
+      updateCustomer(customer, customer.id?.toString()),
     onSuccess: () => {
       queryClient.invalidateQueries("customers");
+      toast.success("client maj avec succès!");
       navigate("/customers");
     },
   });
 
   async function onSubmit(values: z.infer<typeof customerSchema>) {
-    /*     const { data, serverError } = props.customer
-      ? await updateCustomerAction(values)
-      : await newCustomerAction(values);
-    if (data) {
-      router.push("/MyAE/customers");
-      router.refresh();
-      toast.success(data);
-    } else if (serverError) {
-      toast.error(serverError);
-    } */
-    newCustomerMutation.mutate(values);
+    console.log(values);
+    props.customer
+      ? updateCustomerMutation.mutate(values)
+      : newCustomerMutation.mutate(values);
   }
 
   const toogleContact = () => {
@@ -93,7 +87,7 @@ export function CustomerForm(props: {
 
   const toogleAddress = () => {
     if (showAddress) {
-      form.unregister("address");
+      form.unregister("addresses");
     }
     setShowAddress(!showAddress);
   };

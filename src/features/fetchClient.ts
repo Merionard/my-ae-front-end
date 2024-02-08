@@ -34,6 +34,7 @@ export const client = async <T>(
         },
       }
     : { ...fetchParam };
+  console.log(params);
 
   const fetchURL = pathParam ? urlApi.url + `/${pathParam}` : urlApi.url;
 

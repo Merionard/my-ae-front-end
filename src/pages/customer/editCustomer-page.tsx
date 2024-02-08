@@ -1,4 +1,5 @@
 import { CustomerForm } from "@/components/forms/customer/customerForm";
+import { customerSchema } from "@/components/forms/customer/customerSchemaAndTypes";
 import { Card, CardContent } from "@/components/ui/card";
 
 import { useCheckConnection } from "@/features/hooks";
@@ -11,20 +12,42 @@ export function EditCustomerPage() {
   useCheckConnection();
 
   const { id } = useParams();
-
-  const { data: customer, isSuccess } = useQuery(["customer", id], () =>
-    fetchOneCustomer(id)
-  );
-  if (!isSuccess) {
-    <Loader2 className="animate-spin" />;
+  if (!id) {
+    throw new Error("Paramètre invalide!");
   }
 
-  if (isSuccess) {
+  const {
+    data: customer,
+    isSuccess,
+    isLoading,
+    isError,
+  } = useQuery(["customer", id], () => fetchOneCustomer(id));
+
+  if (isError) {
+    throw new Error(
+      "Un problème est survenue lors de la récupération des données"
+    );
+  }
+
+  if (isLoading) {
     return (
       <div className="container mx-auto py-10">
         <Card>
           <CardContent>
-            <CustomerForm customer={null} />
+            <Loader2 className="animate-spin" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isSuccess) {
+    const zodCustomer = customerSchema.parse(customer);
+    return (
+      <div className="container mx-auto py-10">
+        <Card>
+          <CardContent>
+            <CustomerForm customer={zodCustomer} />
           </CardContent>
         </Card>
       </div>
