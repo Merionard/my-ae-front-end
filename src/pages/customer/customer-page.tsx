@@ -5,8 +5,8 @@ import { PlusCircle } from "lucide-react";
 import { useCheckConnection } from "@/features/hooks";
 import { DataTable } from "@/components/ui/dataTable";
 import { useQuery } from "react-query";
-import { fetchAllCustomers } from "@/features/urlAPI";
 import { columns } from "@/features/dataTable/customerColumnsDatatable";
+import { fetchAllCustomers } from "@/features/services/customerService";
 
 export const CustomerPage = () => {
   useCheckConnection();

@@ -32,3 +32,24 @@ export type Contact = {
   email: string;
   customerId: number;
 };
+
+export type WorkPeriod = {
+  id: number;
+  month: number;
+  year: number;
+  lines: WorkPeriodLine[];
+  userId: number;
+};
+
+export type WorkPeriodLine = {
+  id: number;
+  customerId: number;
+  nbDaysWorked: number;
+  workDays: WorkDay[];
+};
+
+export type WorkDay = {
+  id: number;
+  date: Date;
+  duration: number;
+};

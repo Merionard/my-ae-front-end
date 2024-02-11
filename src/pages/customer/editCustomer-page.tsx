@@ -3,7 +3,7 @@ import { customerSchema } from "@/components/forms/customer/customerSchemaAndTyp
 import { Card, CardContent } from "@/components/ui/card";
 
 import { useCheckConnection } from "@/features/hooks";
-import { fetchOneCustomer } from "@/features/urlAPI";
+import { fetchOneCustomer } from "@/features/services/customerService";
 import { Loader2 } from "lucide-react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";

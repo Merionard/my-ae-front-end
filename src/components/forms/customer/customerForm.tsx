@@ -20,8 +20,11 @@ import { CustomerContactForm } from "./customerContactForm";
 import { Etablissement, customerSchema } from "./customerSchemaAndTypes";
 import { CustomerComboBox } from "./searchCustomerComboBox";
 import { useMutation, useQueryClient } from "react-query";
-import { postCustomer, updateCustomer } from "@/features/urlAPI";
 import { useNavigate } from "react-router-dom";
+import {
+  postCustomer,
+  updateCustomer,
+} from "@/features/services/customerService";
 
 export function CustomerForm(props: {
   customer: z.infer<typeof customerSchema> | null;
