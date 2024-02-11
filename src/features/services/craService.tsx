@@ -16,11 +16,20 @@ export const fetchHolidays = async (year: number) => {
   return arrayHolidays;
 };
 
-export const fetchWorkPeriodByDate = (month: number, year: number) => {
-  return client(CRA, "POST", {} as WorkPeriod, undefined, {
+export const fetchWorkPeriodByDate = async (month: number, year: number) => {
+  const wp = await client(CRA, "POST", {} as WorkPeriod, undefined, {
     month: month,
     year: year,
   });
+  wp.lines.forEach((line) =>
+    line.workDays.forEach((worday) => {
+      console.log(worday.date);
+      worday.date = new Date(worday.date);
+      console.log(worday);
+    })
+  );
+
+  return wp;
 };
 
 export const addLineOnWorkPeriod = (workPeriodId: string) => {

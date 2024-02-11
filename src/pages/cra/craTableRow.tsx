@@ -92,24 +92,24 @@ export default function CraTableRow({
 
   const deleteWorkDayMutation = useMutation({
     mutationFn: (id: string | null) => deleteWorkDay(id),
-    onSuccess: (msg) => {
-      toast.success(msg);
+    onSuccess: () => {
+      toast.success("suppression effectuée avec succès!");
       queryClient.invalidateQueries(["workPeriod", year, month]);
     },
   });
 
   const updateWorkDayMutation = useMutation({
     mutationFn: (workDay: WorkDay) => updateWorkDay(workDay),
-    onSuccess: (msg) => {
-      toast.success(msg);
+    onSuccess: () => {
+      toast.success("mise à jour effectuée avec succès!");
       queryClient.invalidateQueries(["workPeriod", year, month]);
     },
   });
 
   const deleteLineMutation = useMutation({
     mutationFn: (lineId: number) => deleteLineOnWorkPeriod(lineId),
-    onSuccess: (msg) => {
-      toast.success(msg);
+    onSuccess: () => {
+      toast.success("suppression effectuée avec succès!");
       queryClient.invalidateQueries(["workPeriod", year, month]);
     },
   });
