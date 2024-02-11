@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { CustomerPage } from "./pages/customer/customer-page";
 import { NewCustomerPage } from "./pages/customer/newCustomer-page";
 import { EditCustomerPage } from "./pages/customer/editCustomer-page";
+import { CraPage } from "./pages/cra/cra-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -30,6 +31,10 @@ function App() {
         {
           path: "/customers/edit/:id",
           element: <EditCustomerPage />,
+        },
+        {
+          path: "/cra",
+          element: <CraPage />,
         },
       ],
     },

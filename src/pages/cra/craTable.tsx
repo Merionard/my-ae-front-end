@@ -24,7 +24,6 @@ import { Customer } from "@/lib/types";
 import CraTableRow from "./craTableRow";
 
 type Props = {
-  userId: string;
   customers: Customer[];
 };
 
@@ -155,7 +154,7 @@ export default function CraTable({ customers }: Props) {
                 key={workLine.id}
                 customers={customers}
                 datesOfCurrentMonth={datesOfCurrentMonth}
-                workLine={workLine}
+                workPeriodLine={workLine}
                 month={month}
                 year={year}
                 holidays={holidays}

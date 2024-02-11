@@ -18,3 +18,13 @@ export const CRA: UrlApi = {
   isSecured: true,
   url: HOST_PREFIX_URL + "/cra",
 };
+
+export const CRA_LINE: UrlApi = {
+  isSecured: true,
+  url: HOST_PREFIX_URL + "/cra/workPeriodLine",
+};
+
+export const CRA_WORK_DAY: UrlApi = {
+  isSecured: true,
+  url: HOST_PREFIX_URL + "/cra/workDay",
+};

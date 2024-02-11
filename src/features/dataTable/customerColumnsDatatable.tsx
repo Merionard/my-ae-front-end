@@ -24,7 +24,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
-import { deleteCustomer } from "../urlAPI";
+import { deleteCustomer } from "../services/customerService";
 
 export const columns: ColumnDef<Customer>[] = [
   {

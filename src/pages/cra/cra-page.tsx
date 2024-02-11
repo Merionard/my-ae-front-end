@@ -1,11 +1,10 @@
 import { useCheckConnection } from "@/features/hooks";
-import { useConnectedUserStore } from "@/features/store";
-import { fetchAllCustomers } from "@/features/urlAPI";
+import { fetchAllCustomers } from "@/features/services/customerService";
 import { useQuery } from "react-query";
+import CraTable from "./craTable";
 
 export const CraPage = () => {
   useCheckConnection();
-  const { user } = useConnectedUserStore();
   const {
     data: customers,
     isError,
@@ -22,11 +21,7 @@ export const CraPage = () => {
   if (isSuccess) {
     return (
       <div className="container mt-5">
-        <CraTable
-          users={users}
-          userId={session.user.id}
-          customers={customers}
-        />
+        <CraTable customers={customers} />
       </div>
     );
   }

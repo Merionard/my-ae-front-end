@@ -19,22 +19,17 @@ import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
 
 import CustomerComboBox from "./customerComboBox";
-import { Customer } from "@/lib/types";
+import { Customer, WorkDay, WorkPeriodLine } from "@/lib/types";
+import {
+  addWorkDay,
+  deleteLineOnWorkPeriod,
+  deleteWorkDay,
+  updateWorkDay,
+  updateWorkPeriodLine,
+} from "@/features/services/craService";
 
 type Props = {
-  workLine: {
-    workDays: {
-      id: number;
-      date: Date;
-      workPeriodLineId: number;
-      duration: number;
-    }[];
-  } & {
-    id: number;
-    customerId: number;
-    workPeriodId: number;
-    nbDaysWorked: number;
-  };
+  workPeriodLine: WorkPeriodLine;
   customers: Customer[];
   datesOfCurrentMonth: Array<Date>;
   year: number;
@@ -45,7 +40,7 @@ type Props = {
 export default function CraTableRow({
   customers,
   datesOfCurrentMonth,
-  workLine,
+  workPeriodLine: line,
   year,
   month,
   holidays,
@@ -55,7 +50,7 @@ export default function CraTableRow({
   );
 
   function initSelectedCustomer() {
-    const customer = customers.find((c) => c.id === workLine.customerId);
+    const customer = customers.find((c) => c.id === line.customerId);
     return customer ? customer : customers.length > 0 ? customers[0] : null;
   }
 
@@ -67,14 +62,7 @@ export default function CraTableRow({
     );
   };
 
-  const isDayWorked = (
-    date: Date,
-    workDays: {
-      id: number;
-      date: Date;
-      workPeriodLineId: number;
-    }[]
-  ) => {
+  const isDayWorked = (date: Date, workDays: WorkDay[]) => {
     return workDays.some(
       (w) =>
         w.date.getDate() === date.getDate() &&
@@ -86,13 +74,42 @@ export default function CraTableRow({
   const queryClient = useQueryClient();
   const workPeriodLineMutation = useMutation({
     mutationFn: (workPeriodLine: WorkPeriodLine) =>
-      client(
-        "/api/workPeriodLine",
-        "POST",
-        workPeriodLine,
-        {} as Omit<WorkPeriodLine, "">
-      ),
+      updateWorkPeriodLine(workPeriodLine),
     onSuccess: () => {
+      queryClient.invalidateQueries(["workPeriod", year, month]);
+      toast.success("Ligne mise à jour avec succès!");
+    },
+  });
+
+  const AddWorkDayMutation = useMutation({
+    mutationFn: (param: { workDay: WorkDay; workLineId: string }) =>
+      addWorkDay(param.workDay, param.workLineId),
+    onSuccess: () => {
+      toast.success("Jour travaillé ajouté avec succès");
+      queryClient.invalidateQueries(["workPeriod", year, month]);
+    },
+  });
+
+  const deleteWorkDayMutation = useMutation({
+    mutationFn: (id: string | null) => deleteWorkDay(id),
+    onSuccess: (msg) => {
+      toast.success(msg);
+      queryClient.invalidateQueries(["workPeriod", year, month]);
+    },
+  });
+
+  const updateWorkDayMutation = useMutation({
+    mutationFn: (workDay: WorkDay) => updateWorkDay(workDay),
+    onSuccess: (msg) => {
+      toast.success(msg);
+      queryClient.invalidateQueries(["workPeriod", year, month]);
+    },
+  });
+
+  const deleteLineMutation = useMutation({
+    mutationFn: (lineId: number) => deleteLineOnWorkPeriod(lineId),
+    onSuccess: (msg) => {
+      toast.success(msg);
       queryClient.invalidateQueries(["workPeriod", year, month]);
     },
   });
@@ -100,90 +117,71 @@ export default function CraTableRow({
   const updateSelectedCustomer = (customer: Customer) => {
     setSelectedCustomer(customer);
     const lineToUpdate = {
-      ...workLine,
+      ...line,
       customerId: customer.id,
-      workDays: undefined,
+      workDays: [],
     };
     workPeriodLineMutation.mutate(lineToUpdate);
   };
 
-  const handleSelectDuration = async (
+  const handleSelectDuration = (
     date: Date,
     workPeriodLineId: number,
     duration: string
   ) => {
-    if (!isDayWorked(date, workLine.workDays) && Number(duration) > 0) {
-      const workDay = await createWorkDay(
-        date,
-        workPeriodLineId,
-        Number(duration)
-      );
-      if (workDay) {
-        toast.success("Jour travaillé ajouté avec succès");
-        queryClient.invalidateQueries(["workPeriod", year, month]);
-      } else {
-        toast.error("une erreur est survenue");
-      }
+    if (!isDayWorked(date, line.workDays) && Number(duration) > 0) {
+      const workDay: WorkDay = {
+        date: date,
+        duration: Number(duration),
+        id: null,
+      };
+      AddWorkDayMutation.mutate({
+        workDay: workDay,
+        workLineId: workPeriodLineId.toString(),
+      });
     }
 
-    if (isDayWorked(date, workLine.workDays)) {
+    if (isDayWorked(date, line.workDays)) {
       if (Number(duration) === 0) {
-        const workDayToDelete = workLine.workDays.find((w) =>
+        const workDayToDelete = line.workDays.find((w) =>
           isDateEqual(w.date, date)
         );
         if (workDayToDelete) {
-          const workDay = await deleteWorkDay(workDayToDelete);
-          if (workDay) {
-            toast.success("Suppression effectuée avec succès!");
-            queryClient.invalidateQueries(["workPeriod", year, month]);
-          } else {
-            toast.error("une erreur est survenue");
-          }
+          deleteWorkDayMutation.mutate(
+            workDayToDelete.id != null ? workDayToDelete.id.toString() : null
+          );
         }
       } else {
-        const workDayToUpdate = workLine.workDays.find((w) =>
+        const workDayToUpdate = line.workDays.find((w) =>
           isDateEqual(w.date, date)
         );
         if (workDayToUpdate) {
-          const updatedWorkDay = await updateWorkDay(
-            workDayToUpdate,
-            Number(duration)
-          );
-          if (updatedWorkDay) {
-            toast.success("Maj effectuée avec succès!");
-            queryClient.invalidateQueries(["workPeriod", year, month]);
-          } else {
-            toast.error("une erreur est survenue");
-          }
+          updateWorkDayMutation.mutate({
+            ...workDayToUpdate,
+            duration: Number(duration),
+          });
         }
       }
-    } else {
     }
   };
 
   const getWorkDayDuration = (date: Date) => {
-    const workDay = workLine.workDays.find((w) => isDateEqual(date, w.date));
+    const workDay = line.workDays.find((w) => isDateEqual(date, w.date));
     return workDay?.duration.toString() ?? "0";
   };
 
   const getTotalDuration = () => {
-    return workLine.workDays
+    return line.workDays
       .map((w) => w.duration)
       .reduce((a, b) => a + Number(b), 0);
   };
 
-  const HandleClickDeleteLine = async () => {
-    const deletedLine = await deleteLine(workLine.id);
-    if (deletedLine) {
-      toast.success("ligne supprimée avec succès!");
-      queryClient.invalidateQueries(["workPeriod", year, month]);
-    } else {
-      toast.error("une erreur est survenue");
-    }
+  const HandleClickDeleteLine = () => {
+    deleteLineMutation.mutate(line.id);
   };
 
   return (
-    <TableRow key={workLine.id}>
+    <TableRow key={line.id}>
       <TableCell className="border p-3 min-w-[300px] h-12">
         <div className="flex flex-col gap-2">
           <CustomerComboBox
@@ -218,7 +216,7 @@ export default function CraTableRow({
           {!isWeekEnd(date) && (
             <Select
               onValueChange={(duration) =>
-                handleSelectDuration(date, workLine.id, duration)
+                handleSelectDuration(date, line.id, duration)
               }
               value={getWorkDayDuration(date)}
             >

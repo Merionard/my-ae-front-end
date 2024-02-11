@@ -44,12 +44,11 @@ export type WorkPeriod = {
 export type WorkPeriodLine = {
   id: number;
   customerId: number;
-  nbDaysWorked: number;
   workDays: WorkDay[];
 };
 
 export type WorkDay = {
-  id: number;
+  id: number | null;
   date: Date;
   duration: number;
 };
