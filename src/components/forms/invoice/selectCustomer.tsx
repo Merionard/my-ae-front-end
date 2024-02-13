@@ -89,9 +89,11 @@ export default function SelectCustomer({
           <p className="h-6 min-h-6">{selectedCustomer?.businessName}</p>
           <p className="h-6 min-h-6">{selectedCustomer?.contact?.firstName}</p>
           <p className="h-6 min-h-6">
-            {selectedCustomer?.address[0].addressName}
+            {selectedCustomer?.addresses[0].addressName}
           </p>
-          <p className="h-6 min-h-6">{selectedCustomer?.address[0].country}</p>
+          <p className="h-6 min-h-6">
+            {selectedCustomer?.addresses[0].country}
+          </p>
           <p className="h-6 min-h-6">{selectedCustomer?.siren}</p>
           <p className="h-6 min-h-6">{selectedCustomer?.siren}</p>
           <p className="h-6 min-h-6">{selectedCustomer?.contact?.email}</p>

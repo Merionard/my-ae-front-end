@@ -21,6 +21,10 @@ import Total from "./total";
 import { Customer } from "@/lib/types";
 import { Invoice, InvoiceLine } from "./invoiceSchema";
 import Conditions from "./conditionsReglement";
+import { useMutation, useQueryClient } from "react-query";
+import { createInvoice, editInvoice } from "@/features/services/invoiceService";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   customers: Customer[];
@@ -70,9 +74,9 @@ export const InvoiceForm = ({ customers, invoiceToEdit }: Props) => {
     setSelectedCustomer(customer);
     setInvoice((prev) => {
       const updatedInvoice = { ...prev };
-      if (customer.address.length > 0) {
-        updatedInvoice.customerAddress = customer.address[0].addressName;
-        updatedInvoice.customerCountry = customer.address[0].country;
+      if (customer.addresses.length > 0) {
+        updatedInvoice.customerAddress = customer.addresses[0].addressName;
+        updatedInvoice.customerCountry = customer.addresses[0].country;
       }
       updatedInvoice.customerName = customer.businessName;
       updatedInvoice.customerSociety = customer.businessName;
@@ -242,6 +246,24 @@ export const InvoiceForm = ({ customers, invoiceToEdit }: Props) => {
     setInvoice((prev) => ({ ...prev, lines: [...prev.lines, newLine] }));
   };
 
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const createInvoiceMutation = useMutation({
+    mutationFn: (invoice: Invoice) => createInvoice(invoice),
+    onSuccess: () => {
+      queryClient.invalidateQueries("invoices");
+      toast.success("facture créée avec succès!");
+      navigate("/invoice");
+    },
+  });
+  const editInvoiceMutation = useMutation({
+    mutationFn: (invoice: Invoice) => editInvoice(invoice),
+    onSuccess: () => {
+      queryClient.invalidateQueries("invoices");
+      toast.success("facture maj avec succès!");
+      navigate("/invoice");
+    },
+  });
   const saveInvoice = async () => {
     console.log(invoice);
     const { success, msg } = validateInvoice();
@@ -250,6 +272,12 @@ export const InvoiceForm = ({ customers, invoiceToEdit }: Props) => {
       return;
     }
     setValidationMsg(null);
+    if (invoiceToEdit) {
+      editInvoiceMutation.mutate(invoice);
+    } else {
+      createInvoiceMutation.mutate(invoice);
+    }
+
     /*     const { data, serverError, validationError } = invoiceToEdit
       ? await editInvoice(invoice)
       : await createInvoice(invoice);

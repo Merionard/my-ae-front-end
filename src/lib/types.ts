@@ -10,7 +10,7 @@ export type Customer = {
   businessName: string;
   vatNumber: string | null;
   siren: string | null;
-  address: Address[];
+  addresses: Address[];
   contact?: Contact;
 };
 

@@ -16,7 +16,7 @@ export const InvoicePage = () => {
     isError,
     isLoading,
     isSuccess,
-  } = useQuery("customers", () => fetchAllInvoices());
+  } = useQuery("invoices", () => fetchAllInvoices());
 
   if (isError) {
     return <h1>error</h1>;
