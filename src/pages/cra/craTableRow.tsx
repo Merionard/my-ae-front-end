@@ -129,6 +129,7 @@ export default function CraTableRow({
     workPeriodLineId: number,
     duration: string
   ) => {
+    console.log(date);
     if (!isDayWorked(date, line.workDays) && Number(duration) > 0) {
       const workDay: WorkDay = {
         date: date,

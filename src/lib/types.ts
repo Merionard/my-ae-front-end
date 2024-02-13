@@ -1,3 +1,5 @@
+import { number } from "zod";
+
 export type User = {
   firstName: string;
   lastName: string;
@@ -51,4 +53,38 @@ export type WorkDay = {
   id: number | null;
   date: Date;
   duration: number;
+};
+
+export type Invoice = {
+  id: number;
+  number: string;
+  type: string;
+  statut: string;
+  customerName: string;
+  customerSociety: string | null;
+  customerSiren: string | null;
+  customerVatNumber: string | null;
+  customerAddress: string;
+  customerCountry: string;
+  customerMail: string | null;
+  conditionReglement: string;
+  modeReglement: string;
+  createdAt: Date;
+  validateAt: Date | null;
+  payedAt: Date | null;
+  dueDate: Date | null;
+  lines: InvoiceLine[];
+  totalHT: number;
+  totalTTC: number;
+};
+
+export type InvoiceLine = {
+  id: number;
+  type: string;
+  unitPrice: number;
+  quantity: number;
+  vatRate: number;
+  totalHT: number;
+  totalTTC: number;
+  VatAmount: number;
 };

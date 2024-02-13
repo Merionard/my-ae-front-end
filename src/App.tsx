@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RootLayout } from "./RootLayout";
 import { ErrorPage } from "./error-page";
 import LogInPage from "./pages/login-page";
-import { InvoicePage } from "./pages/invoice-page";
+import { InvoicePage } from "./pages/invoice/invoice-page";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { CustomerPage } from "./pages/customer/customer-page";
 import { NewCustomerPage } from "./pages/customer/newCustomer-page";

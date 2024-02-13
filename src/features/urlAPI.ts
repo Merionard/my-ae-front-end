@@ -28,3 +28,8 @@ export const CRA_WORK_DAY: UrlApi = {
   isSecured: true,
   url: HOST_PREFIX_URL + "/cra/workDay",
 };
+
+export const INVOICE: UrlApi = {
+  isSecured: true,
+  url: HOST_PREFIX_URL + "/invoice",
+};

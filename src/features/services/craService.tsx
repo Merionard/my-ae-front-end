@@ -23,9 +23,7 @@ export const fetchWorkPeriodByDate = async (month: number, year: number) => {
   });
   wp.lines.forEach((line) =>
     line.workDays.forEach((worday) => {
-      console.log(worday.date);
       worday.date = new Date(worday.date);
-      console.log(worday);
     })
   );
 
