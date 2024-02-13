@@ -8,6 +8,7 @@ import { CustomerPage } from "./pages/customer/customer-page";
 import { NewCustomerPage } from "./pages/customer/newCustomer-page";
 import { EditCustomerPage } from "./pages/customer/editCustomer-page";
 import { CraPage } from "./pages/cra/cra-page";
+import { NewInvoicePage } from "./pages/invoice/newInvoice-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,6 +20,10 @@ function App() {
         {
           path: "/invoice",
           element: <InvoicePage />,
+        },
+        {
+          path: "/invoice/new",
+          element: <NewInvoicePage />,
         },
         {
           path: "/customers",

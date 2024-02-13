@@ -1,5 +1,3 @@
-import { number } from "zod";
-
 export type User = {
   firstName: string;
   lastName: string;
@@ -88,3 +86,11 @@ export type InvoiceLine = {
   totalTTC: number;
   VatAmount: number;
 };
+
+export type ConditionsReglementType =
+  | "30 jours fin de mois"
+  | "45 jours"
+  | "45 jours fin de mois"
+  | "60 jours"
+  | "60 jours fin de mois"
+  | "90 jours";
