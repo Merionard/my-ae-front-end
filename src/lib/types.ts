@@ -57,7 +57,7 @@ export type Invoice = {
   id: number;
   number: string;
   type: string;
-  statut: string;
+  status: string;
   customerName: string;
   customerSociety: string | null;
   customerSiren: string | null;

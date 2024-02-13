@@ -6,6 +6,7 @@ import { ValidateAction } from "./validateAction";
 import { PayAction } from "./payAction";
 
 export const Actions = (props: { invoice: Invoice }) => {
+  console.log(props.invoice);
   const editAction = (
     <a href={`/invoice/edit/${props.invoice.id}`}>
       <Button size={"icon"} title="Editer" className="bg-orange-500">
@@ -24,7 +25,7 @@ export const Actions = (props: { invoice: Invoice }) => {
 
   let actions = null;
 
-  if (props.invoice.statut === "DRAFT") {
+  if (props.invoice.status === "DRAFT") {
     actions = (
       <>
         {editAction}
@@ -39,7 +40,7 @@ export const Actions = (props: { invoice: Invoice }) => {
       </>
     );
   }
-  if (props.invoice.statut === "VALIDATED") {
+  if (props.invoice.status === "VALIDATED") {
     actions = (
       <>
         {showAction}
@@ -48,7 +49,7 @@ export const Actions = (props: { invoice: Invoice }) => {
     );
   }
 
-  if (props.invoice.statut === "PAYED") {
+  if (props.invoice.status === "PAYED") {
     actions = <>{showAction}</>;
   }
 
