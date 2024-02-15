@@ -14,3 +14,7 @@ export const createInvoice = (invoice: ZodInvoice) => {
 export const editInvoice = (invoice: ZodInvoice) => {
   return client(INVOICE, "PUT", {} as Invoice, undefined, invoice);
 };
+
+export const fetchInvoice = (id: string) => {
+  return client(INVOICE, "GET", {} as ZodInvoice, id);
+};

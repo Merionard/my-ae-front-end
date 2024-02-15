@@ -67,7 +67,7 @@ export const columnsInvoice: ColumnDef<Invoice>[] = [
     },
   },
   {
-    accessorKey: "statut",
+    accessorKey: "status",
     header: ({ column }) => {
       return (
         <Button
@@ -80,7 +80,7 @@ export const columnsInvoice: ColumnDef<Invoice>[] = [
       );
     },
     cell({ row }) {
-      const statut = row.getValue("statut") as string;
+      const statut = row.getValue("status") as string;
       return <div className="text-center">{statut}</div>;
     },
   },

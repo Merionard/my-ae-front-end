@@ -6,7 +6,6 @@ import { ValidateAction } from "./validateAction";
 import { PayAction } from "./payAction";
 
 export const Actions = (props: { invoice: Invoice }) => {
-  console.log(props.invoice);
   const editAction = (
     <a href={`/invoice/edit/${props.invoice.id}`}>
       <Button size={"icon"} title="Editer" className="bg-orange-500">

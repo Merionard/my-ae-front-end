@@ -17,7 +17,6 @@ export const InvoicePage = () => {
     isLoading,
     isSuccess,
   } = useQuery("invoices", () => fetchAllInvoices());
-  console.log(invoices);
 
   if (isError) {
     return <h1>error</h1>;
