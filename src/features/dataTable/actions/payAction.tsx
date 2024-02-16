@@ -13,21 +13,29 @@ import { Button } from "@/components/ui/button";
 import { Euro } from "lucide-react";
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
+import { useMutation, useQueryClient } from "react-query";
+import { payInvoice } from "@/features/services/invoiceService";
+import { toast } from "sonner";
 
 export const PayAction = (props: { invoiceId: number }) => {
   const [payDate, setPayDate] = useState<Date | undefined>(new Date());
 
-  async function onConfirmPay() {
+  const queryClient = useQueryClient();
+  const payInvoiceMutation = useMutation({
+    mutationFn: (params: { invoiceId: number; payDate: Date }) =>
+      payInvoice(params.invoiceId, params.payDate),
+    onSuccess: () => {
+      queryClient.invalidateQueries("invoices");
+      toast.success("Facture payée avec succès!");
+    },
+  });
+
+  function onConfirmPay() {
     if (!payDate) {
       alert("Veuillez sélectionner une date de paiement!");
       return;
     }
-    /*     const payedInvoice = await payInvoice(props.invoiceId, payDate);
-    if (payedInvoice) {
-      toast.success("la facture " + payedInvoice.number + " a été payée");
-    } else {
-      toast.error("une erreur est survenue");
-    } */
+    payInvoiceMutation.mutate({ invoiceId: props.invoiceId, payDate });
   }
   return (
     <AlertDialog>

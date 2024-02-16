@@ -10,44 +10,25 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ConditionsReglementType } from "@/lib/types";
-import { getLastDayOfMonth } from "../columnsDatatableInvoice";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "sonner";
+import { validateInvoice } from "@/features/services/invoiceService";
 export const ValidateAction = (props: {
   invoiceId: number;
   conditionReglement: ConditionsReglementType;
 }) => {
-  async function onConfirmValidate() {
-    let dueDate = new Date();
-    switch (props.conditionReglement) {
-      case "30 jours fin de mois":
-        dueDate.setDate(dueDate.getDate() + 30);
-        dueDate = getLastDayOfMonth(dueDate.getFullYear(), dueDate.getMonth());
-        break;
-      case "45 jours":
-        dueDate.setDate(dueDate.getDate() + 45);
-        break;
-      case "45 jours fin de mois":
-        dueDate.setDate(dueDate.getDate() + 45);
-        dueDate = getLastDayOfMonth(dueDate.getFullYear(), dueDate.getMonth());
-        break;
-      case "60 jours":
-        dueDate.setDate(dueDate.getDate() + 60);
-        break;
-      case "60 jours fin de mois":
-        dueDate.setDate(dueDate.getDate() + 60);
-        dueDate = getLastDayOfMonth(dueDate.getFullYear(), dueDate.getMonth());
-        break;
-      case "90 jours":
-        dueDate.setDate(dueDate.getDate() + 90);
-        break;
-    }
-    /*     const validatedInvoice = await validateInvoice(props.invoiceId, dueDate);
-    if (validatedInvoice) {
-      toast.success("la facture " + validatedInvoice.number + " a été validée");
-    } else {
-      toast.error("une erreur est survenue");
-    } */
+  const queryClient = useQueryClient();
+  const validateInvoiceMutation = useMutation({
+    mutationFn: (invoiceId: number) => validateInvoice(invoiceId),
+    onSuccess: () => {
+      queryClient.invalidateQueries("invoices");
+      toast.success("Validation facture effectuée avec succès!");
+    },
+  });
+  function onConfirmValidate() {
+    validateInvoiceMutation.mutate(props.invoiceId);
   }
 
   return (

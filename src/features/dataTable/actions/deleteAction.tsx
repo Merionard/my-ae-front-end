@@ -10,16 +10,22 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { deleteInvoice } from "@/features/services/invoiceService";
 import { Trash2 } from "lucide-react";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "sonner";
 
 export const DeleteAction = (props: { invoiceId: number }) => {
+  const queryClient = useQueryClient();
+  const deleteInvoiceMutation = useMutation({
+    mutationFn: (id: number) => deleteInvoice(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries("invoices");
+      toast.success("Facture supprimée!");
+    },
+  });
   async function onConfirmDelete() {
-    /*     const deletedInvoice = await deleteInvoice(props.invoiceId);
-    if (deletedInvoice) {
-      toast.success("la facture " + deletedInvoice.number + " a été supprimée");
-    } else {
-      toast.error("une erreur est survenue");
-    } */
+    deleteInvoiceMutation.mutate(props.invoiceId);
   }
 
   return (

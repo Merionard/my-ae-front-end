@@ -100,6 +100,7 @@ export const columnsInvoice: ColumnDef<Invoice>[] = [
     },
     cell: ({ row }) => {
       const validatedAt = row.getValue("dueDate") as Date;
+      console.log(validatedAt);
       const formatedDate = validatedAt
         ? validatedAt.toLocaleDateString("fr")
         : null;

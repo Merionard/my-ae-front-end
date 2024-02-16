@@ -33,3 +33,13 @@ export const INVOICE: UrlApi = {
   isSecured: true,
   url: HOST_PREFIX_URL + "/invoice",
 };
+
+export const INVOICE_VALIDATE: UrlApi = {
+  isSecured: true,
+  url: HOST_PREFIX_URL + "/invoice/validate",
+};
+
+export const INVOICE_PAY: UrlApi = {
+  isSecured: true,
+  url: HOST_PREFIX_URL + "/invoice/pay",
+};
