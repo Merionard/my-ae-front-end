@@ -1,7 +1,12 @@
 import { LogInForm } from "@/components/forms/logInForm";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { AlertTriangle } from "lucide-react";
+import { useParams } from "react-router-dom";
 
 export default function LogInPage() {
+  const { reason } = useParams();
+
   return (
     <main className="flex min-h-screen flex-col p-6">
       <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52"></div>
@@ -19,6 +24,13 @@ export default function LogInPage() {
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
           <div className="w-2/5">
+            {reason === "unauthorized" && (
+              <Alert className="mb-3">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Votre session a expiré!</AlertTitle>
+                <AlertDescription>Veuillez vous reconnecter!</AlertDescription>
+              </Alert>
+            )}
             <LogInForm />
           </div>
         </div>

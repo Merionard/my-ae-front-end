@@ -1,14 +1,8 @@
+import axios from "axios";
 import { getAuthToken } from "./hooks";
 import { UrlApi } from "./urlAPI";
 
 type FetchMethod = "GET" | "POST" | "DELETE" | "PUT";
-/* function reviveDate(key: string, value: string) {
-  // Matches strings like "2022-08-25T09:39:19.288Z"
-  const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
-  return typeof value === "string" && isoDateRegex.test(value)
-    ? new Date(value)
-    : value;
-} */
 export const client = async <T>(
   urlApi: UrlApi,
   method: FetchMethod,
@@ -50,3 +44,29 @@ export const client = async <T>(
   }
   return {} as T;
 };
+
+export const customFetchClient = axios.create({
+  baseURL: "http://localhost:8080",
+});
+
+customFetchClient.interceptors.request.use(
+  async (config) => {
+    const token = getAuthToken();
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+customFetchClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      window.location.href = "/login/unauthorized";
+    }
+  }
+);

@@ -49,7 +49,7 @@ function App() {
       ],
     },
     {
-      path: "/login",
+      path: "/login/:reason?",
       element: <LogInPage />,
     },
   ]);

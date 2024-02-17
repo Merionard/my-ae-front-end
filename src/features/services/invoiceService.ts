@@ -1,10 +1,23 @@
 import { Invoice as ZodInvoice } from "@/components/forms/invoice/invoiceSchema";
-import { client } from "../fetchClient";
-import { INVOICE, INVOICE_PAY, INVOICE_VALIDATE } from "../urlAPI";
 import { Invoice } from "@/lib/types";
+import { client, customFetchClient } from "../fetchClient";
+import { INVOICE, INVOICE_PAY, INVOICE_VALIDATE } from "../urlAPI";
 
 export const fetchAllInvoices = async () => {
-  const invoices = await client(INVOICE, "GET", {} as Invoice[]);
+  /*   const invoices = await client(INVOICE, "GET", {} as Invoice[]);
+  invoices.forEach((invoice) => {
+    if (invoice.dueDate != null) {
+      invoice.dueDate = new Date(invoice.dueDate);
+    }
+    if (invoice.validateAt != null) {
+      invoice.validateAt = new Date(invoice.validateAt);
+    }
+    if (invoice.payedAt != null) {
+      invoice.payedAt = new Date(invoice.payedAt);
+    }
+  });
+  return invoices; */
+  const { data: invoices } = await customFetchClient.get<Invoice[]>("/invoice");
   invoices.forEach((invoice) => {
     if (invoice.dueDate != null) {
       invoice.dueDate = new Date(invoice.dueDate);
