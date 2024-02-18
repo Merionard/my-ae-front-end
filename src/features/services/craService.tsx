@@ -1,7 +1,7 @@
 import { WorkDay, WorkPeriod, WorkPeriodLine } from "@/lib/types";
-import { client } from "../fetchClient";
-import { CRA, CRA_LINE, CRA_WORK_DAY } from "../urlAPI";
+import { customFetchClient } from "../fetchClient";
 
+const API_CRA_URL = "/cra";
 export const fetchHolidays = async (year: number) => {
   const url = `https://calendrier.api.gouv.fr/jours-feries/metropole/${year}.json`;
   const response = await fetch(url);
@@ -17,7 +17,7 @@ export const fetchHolidays = async (year: number) => {
 };
 
 export const fetchWorkPeriodByDate = async (month: number, year: number) => {
-  const wp = await client(CRA, "POST", {} as WorkPeriod, undefined, {
+  const { data: wp } = await customFetchClient.post<WorkPeriod>(API_CRA_URL, {
     month: month,
     year: year,
   });
@@ -31,29 +31,25 @@ export const fetchWorkPeriodByDate = async (month: number, year: number) => {
 };
 
 export const addLineOnWorkPeriod = (workPeriodId: string) => {
-  return client(CRA, "GET", {} as WorkPeriod, workPeriodId);
+  return customFetchClient.get(API_CRA_URL + `/${workPeriodId}`);
 };
 
 export const deleteLineOnWorkPeriod = (workLineId: number) => {
-  return client(CRA_LINE, "DELETE", {} as string, workLineId.toString());
+  return customFetchClient.delete(
+    API_CRA_URL + `/workPeriodLine/${workLineId}`
+  );
 };
 
 export const updateWorkPeriodLine = (workPeriodLine: WorkPeriodLine) => {
-  return client(
-    CRA_LINE,
-    "POST",
-    {} as WorkPeriodLine,
-    undefined,
+  return customFetchClient.post(
+    API_CRA_URL + "/workPeriodLine",
     workPeriodLine
   );
 };
 
 export const addWorkDay = (workDay: WorkDay, workPeriodLineId: string) => {
-  return client(
-    CRA_WORK_DAY,
-    "PUT",
-    {} as WorkPeriodLine,
-    workPeriodLineId,
+  return customFetchClient.put(
+    API_CRA_URL + `/workDay/${workPeriodLineId}`,
     workDay
   );
 };
@@ -62,9 +58,9 @@ export const deleteWorkDay = (workDayId: string | null) => {
   if (!workDayId) {
     return new Promise<string>((resolve) => resolve("nothing to delete"));
   }
-  return client(CRA_WORK_DAY, "DELETE", {} as string, workDayId);
+  return customFetchClient.delete(API_CRA_URL + `/workDay/${workDayId}`);
 };
 
 export const updateWorkDay = (workDay: WorkDay) => {
-  return client(CRA_WORK_DAY, "POST", {} as string, undefined, workDay);
+  return customFetchClient.post(API_CRA_URL + "/workDay", workDay);
 };

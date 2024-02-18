@@ -1,28 +1,35 @@
-import { Customer } from "@/lib/types";
-import { client } from "../fetchClient";
-import { CUSTOMERS } from "../urlAPI";
-import { z } from "zod";
 import { customerSchema } from "@/components/forms/customer/customerSchemaAndTypes";
+import { Customer } from "@/lib/types";
+import { z } from "zod";
+import { customFetchClient } from "../fetchClient";
 
-export const fetchAllCustomers = () => {
-  return client(CUSTOMERS, "GET", {} as Customer[]);
+const CUSTOMERS_API_URL = "/customers";
+
+export const fetchAllCustomers = async () => {
+  const { data: customers } = await customFetchClient.get<Customer[]>(
+    CUSTOMERS_API_URL
+  );
+  return customers;
 };
 
 export const postCustomer = (customer: z.infer<typeof customerSchema>) => {
-  return client(CUSTOMERS, "POST", {} as Customer, undefined, customer);
+  return customFetchClient.post(CUSTOMERS_API_URL, customer);
 };
 
-export const fetchOneCustomer = (customerId: string) => {
-  return client(CUSTOMERS, "GET", {} as Customer, customerId);
+export const fetchOneCustomer = async (customerId: string) => {
+  const { data: customer } = await customFetchClient.get(
+    CUSTOMERS_API_URL + `/${customerId}`
+  );
+  return customer;
 };
 
 export const updateCustomer = (
   customer: z.infer<typeof customerSchema>,
   customerId?: string
 ) => {
-  return client(CUSTOMERS, "PUT", {} as Customer, customerId, customer);
+  return customFetchClient.put(CUSTOMERS_API_URL + `/${customerId}`, customer);
 };
 
 export const deleteCustomer = (customerId: string) => {
-  return client(CUSTOMERS, "DELETE", {} as Customer, customerId);
+  return customFetchClient.delete(CUSTOMERS_API_URL + `/${customerId}`);
 };

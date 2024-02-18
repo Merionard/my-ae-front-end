@@ -8,16 +8,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { User } from "@/lib/types";
-import { client } from "@/features/fetchClient";
+import { customFetchClient } from "@/features/fetchClient";
 import { useLogIn } from "@/features/hooks";
-import { LOG_IN } from "@/features/urlAPI";
+import { User } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { Typography } from "../ui/Typography";
-import { useState } from "react";
 
 export const LogInForm = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -39,7 +38,10 @@ export const LogInForm = () => {
 
   async function onSubmit(values: z.infer<typeof logInSchema>) {
     try {
-      const user = await client(LOG_IN, "POST", {} as User, undefined, values);
+      const { data: user } = await customFetchClient.post<User>(
+        "/auth/login",
+        values
+      );
       if (user) {
         logIn(user);
         navigate("/");

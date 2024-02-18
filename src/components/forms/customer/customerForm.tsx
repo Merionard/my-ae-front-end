@@ -62,6 +62,9 @@ export function CustomerForm(props: {
       toast.success("nouveau client ajouté avec succès!");
       navigate("/customers");
     },
+    onError() {
+      alert("erreur");
+    },
   });
 
   const updateCustomerMutation = useMutation({
