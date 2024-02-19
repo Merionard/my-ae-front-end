@@ -94,3 +94,19 @@ export type ConditionsReglementType =
   | "60 jours"
   | "60 jours fin de mois"
   | "90 jours";
+
+export type TodoList = {
+  title: string;
+  userId?: number;
+  tasks: Task[];
+};
+
+export type Task = {
+  id?: number;
+  title: string;
+  description?: string;
+  status?: string;
+  order: number;
+  createdAt?: Date;
+  critical?: boolean;
+};
