@@ -29,7 +29,7 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
-import { TodoList } from "@/lib/types";
+import { Task, TodoList } from "@/lib/types";
 import { useMutation, useQueryClient } from "react-query";
 import { createUpdateTodoMutationFn } from "./mutation";
 import { deleteTodoList } from "@/features/services/todoService";
@@ -61,9 +61,13 @@ export const ListItem = ({ todoList }: { todoList: TodoList }) => {
 
   const newTask = async (maxOrder: number) => {
     if (newTaskName) {
+      const task: Task = { title: newTaskName, order: maxOrder + 1 };
+      if (newTaskDescription) {
+        task.description = newTaskDescription;
+      }
       const todo = {
         ...todoList,
-        tasks: [...todoList.tasks, { title: newTaskName, order: maxOrder + 1 }],
+        tasks: [...todoList.tasks, task],
       };
       createUpdateTodoListMutation.mutate(todo);
     }
@@ -88,10 +92,7 @@ export const ListItem = ({ todoList }: { todoList: TodoList }) => {
   };
 
   const editTodoListTitle = async () => {
-    /* createUpdateTodoListMutation.mutate({...todoList,tasks:cloneTasks})
-    await updateTodoList(todoListTitle, todoList.title);
-    toast.success("liste mise à jour");
-    router.refresh(); */
+    createUpdateTodoListMutation.mutate({ ...todoList, title: todoListTitle });
   };
   return (
     <Card key={todoList.title}>

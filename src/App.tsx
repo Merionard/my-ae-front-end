@@ -10,6 +10,7 @@ import { EditCustomerPage } from "./pages/customer/editCustomer-page";
 import { CraPage } from "./pages/cra/cra-page";
 import { NewInvoicePage } from "./pages/invoice/newInvoice-page";
 import { EditInvoicePage } from "./pages/invoice/editInvoice-page";
+import TodoListPage from "./pages/todoList/todoList-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -45,6 +46,10 @@ function App() {
         {
           path: "/cra",
           element: <CraPage />,
+        },
+        {
+          path: "/todo",
+          element: <TodoListPage />,
         },
       ],
     },

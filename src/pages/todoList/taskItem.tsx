@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import clsx from "clsx";
-import { changeStatutTask, deleteTask, toogleCriticalTask } from "./todoAction";
 import { toast } from "sonner";
 import { Megaphone, MegaphoneOff, Trash } from "lucide-react";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { Task } from "@/lib/types";
+import { useMutation, useQueryClient } from "react-query";
+import { deleteTask, updateTask } from "@/features/services/todoService";
 
 export const TaskItem = ({
   task,
@@ -13,29 +14,41 @@ export const TaskItem = ({
   task: Task;
   provided: DraggableProvided;
 }) => {
-  const checkTask = async (check: boolean | string, taskId: number) => {
-    const updatedTask = await changeStatutTask(check ? "DONE" : "OPEN", taskId);
-    if (updatedTask) {
-      toast.success("Tache mis à jour avec succès!");
-      router.refresh();
-    } else {
-      toast.error("Une erreur est survenue");
-    }
+  const queryClient = useQueryClient();
+
+  const updateTaskMutation = useMutation({
+    mutationFn: (task: Task) => updateTask(task),
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+      toast.success("Tache mise à jour!");
+    },
+    onError() {
+      alert("erreur");
+    },
+  });
+
+  const deleteTaskMutation = useMutation({
+    mutationFn: (id: number) => deleteTask(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+      toast.success("Tache supprimée");
+    },
+    onError() {
+      alert("erreur");
+    },
+  });
+
+  const checkTask = async (check: boolean | string) => {
+    updateTaskMutation.mutate({ ...task, status: check ? "DONE" : "OPEN" });
   };
 
-  const onClickDelete = async (taskId: number) => {
-    const deletedTask = await deleteTask(taskId);
-    if (deletedTask) {
-      toast.success("Tache supprimée!");
-      router.refresh();
-    } else {
-      toast.error("Une erreur est survenue");
-    }
+  const onClickDelete = async (taskId: number | undefined) => {
+    if (!taskId) return;
+    deleteTaskMutation.mutate(taskId);
   };
 
   const toogleCritical = async () => {
-    await toogleCriticalTask(!task.critical, task.id);
-    router.refresh();
+    updateTaskMutation.mutate({ ...task, critical: !task.critical });
   };
   return (
     <div
@@ -50,7 +63,7 @@ export const TaskItem = ({
       <div className="flex items-center gap-3">
         <Checkbox
           checked={task.status === "DONE"}
-          onCheckedChange={(e) => checkTask(e.valueOf(), task.id)}
+          onCheckedChange={(e) => checkTask(e.valueOf())}
         />
         <p
           className={clsx({
