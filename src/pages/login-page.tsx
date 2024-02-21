@@ -1,11 +1,19 @@
 import { LogInForm } from "@/components/forms/logInForm";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { useLogOut } from "@/features/hooks";
 import { AlertTriangle } from "lucide-react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 export default function LogInPage() {
   const { reason } = useParams();
+  const logout = useLogOut();
+  useEffect(() => {
+    if (reason === "unauthorized") {
+      logout();
+    }
+  }, [reason, logout]);
 
   return (
     <main className="flex min-h-screen flex-col p-6">

@@ -36,7 +36,7 @@ export const Authentication = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem asChild>
-              <a href={`/MyAE/myAccount`}>
+              <a href={`/myAccount`}>
                 <User2 className="mr-2" size={12} />
                 Mon profil
               </a>

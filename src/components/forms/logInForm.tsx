@@ -43,8 +43,9 @@ export const LogInForm = () => {
         values
       );
       if (user) {
+        console.log(user);
         logIn(user);
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       setErrorMsg("Identifiants incorrects");

@@ -12,11 +12,11 @@ import { NewInvoicePage } from "./pages/invoice/newInvoice-page";
 import { EditInvoicePage } from "./pages/invoice/editInvoice-page";
 import TodoListPage from "./pages/todoList/todoList-page";
 import HomePage from "./pages/home/home-page";
+import MyAccountPage from "./pages/myAccount/myAccount-page";
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: "",
       element: <RootLayout />,
       errorElement: <ErrorPage />,
       children: [
@@ -55,6 +55,10 @@ function App() {
         {
           path: "/todo",
           element: <TodoListPage />,
+        },
+        {
+          path: "/myAccount",
+          element: <MyAccountPage />,
         },
       ],
     },

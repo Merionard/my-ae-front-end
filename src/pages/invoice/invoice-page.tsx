@@ -1,13 +1,13 @@
-import { columnsInvoice } from "../../features/dataTable/columnsDatatableInvoice";
-import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import { columnsInvoice } from "../../features/dataTable/columnsDatatableInvoice";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-import { useCheckConnection } from "@/features/hooks";
-import { useQuery } from "react-query";
-import { fetchAllInvoices } from "@/features/services/invoiceService";
 import { DataTable } from "@/components/ui/dataTable";
+import { useCheckConnection } from "@/features/hooks";
+import { fetchAllInvoices } from "@/features/services/invoiceService";
+import { useQuery } from "react-query";
 
 export const InvoicePage = () => {
   useCheckConnection();

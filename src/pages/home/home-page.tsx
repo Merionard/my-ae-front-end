@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ProgressBar from "@/components/ui/testProgress";
 import { AlertTriangle, Check, Euro } from "lucide-react";
 
-import CaInfo from "./caInfo";
 import { useCheckConnection } from "@/features/hooks";
-import { useQuery } from "react-query";
 import { fetchDashboardInfos } from "@/features/services/dashboardService";
+import { useQuery } from "react-query";
+import CaInfo from "./caInfo";
 
 export default function HomePage() {
   useCheckConnection();
@@ -16,6 +16,13 @@ export default function HomePage() {
     isError,
     isSuccess,
   } = useQuery("dashboardInfo", () => fetchDashboardInfos());
+
+  if (isLoading) {
+    return "loading";
+  }
+  if (isError) {
+    return "error";
+  }
 
   if (isSuccess) {
     return (
@@ -67,6 +74,24 @@ export default function HomePage() {
                     <CaInfo />
                   </div>
                 </CardHeader>
+                <CardContent>
+                  {dashboardInfo.plafondActivite ? (
+                    <ProgressBar
+                      max={dashboardInfo.plafondActivite}
+                      atteint={dashboardInfo.currentCA}
+                    />
+                  ) : (
+                    <Alert variant={"destructive"}>
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertTitle>Plafond non défini!</AlertTitle>
+                      <AlertDescription>
+                        Pour avoir un plafond qui correspond à votre activité
+                        veuillez saisir dans votre profil votre type
+                        d&apos;activité
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </CardContent>
               </Card>
               <Card>
                 <CardHeader>

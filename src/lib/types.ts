@@ -3,6 +3,8 @@ export type User = {
   lastName: string;
   token: string;
   email: string;
+  activity: string | null;
+  image: string | null;
 };
 
 export type Customer = {
@@ -116,6 +118,7 @@ export type DashBoardInfo = {
   currentCA: number;
   lateInvoices: Invoice[];
   criticalTaskDto: Task[];
+  plafondActivite: number | null;
 };
 
 export type WorkPeriodInfo = {
