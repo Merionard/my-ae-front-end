@@ -110,3 +110,15 @@ export type Task = {
   createdAt?: Date;
   critical?: boolean;
 };
+
+export type DashBoardInfo = {
+  workPeriodInfos: WorkPeriodInfo[];
+  currentCA: number;
+  lateInvoices: Invoice[];
+  criticalTaskDto: Task[];
+};
+
+export type WorkPeriodInfo = {
+  customerName: string;
+  nbDaysWorked: number;
+};

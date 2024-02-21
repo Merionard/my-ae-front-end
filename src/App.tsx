@@ -11,6 +11,7 @@ import { CraPage } from "./pages/cra/cra-page";
 import { NewInvoicePage } from "./pages/invoice/newInvoice-page";
 import { EditInvoicePage } from "./pages/invoice/editInvoice-page";
 import TodoListPage from "./pages/todoList/todoList-page";
+import HomePage from "./pages/home/home-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,6 +20,10 @@ function App() {
       element: <RootLayout />,
       errorElement: <ErrorPage />,
       children: [
+        {
+          path: "/home",
+          element: <HomePage />,
+        },
         {
           path: "/invoice",
           element: <InvoicePage />,
