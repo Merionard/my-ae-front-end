@@ -60,9 +60,13 @@ export const LogInForm = () => {
 
   return (
     <Card>
-      {errorMsg && <Typography variant={"large"}>{errorMsg}</Typography>}
       <CardHeader>
-        <CardTitle>Bienvenue!</CardTitle>
+        <CardTitle>Renseignez vos identifiants</CardTitle>
+        {errorMsg && (
+          <Typography variant={"large"} className="text-red-500">
+            {errorMsg}
+          </Typography>
+        )}
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>

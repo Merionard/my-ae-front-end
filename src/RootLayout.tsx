@@ -3,6 +3,10 @@ import { Header } from "./components/layout/header";
 import SideNav from "./components/layout/sidenav";
 import { useCheckConnection } from "./features/hooks";
 import { Toaster } from "sonner";
+import { Github, Linkedin } from "lucide-react";
+import reactLogo from "./assets/react-2.svg";
+import tailwindLogo from "./assets/tailwindcss.svg";
+import springLogo from "./assets/spring-14.svg";
 
 export const RootLayout = () => {
   useCheckConnection();
@@ -16,7 +20,52 @@ export const RootLayout = () => {
           <Outlet />
         </main>
       </div>
-      <footer className="bg-gray-100">Footer</footer>
+      <footer className="bg-gray-800 py-5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div>
+              <a
+                href="http://www.linkedin.com/in/michaël-ben-arab-3458a087"
+                className="text-gray-400 hover:text-white flex items-center space-x-2"
+                target="_blank"
+              >
+                <Linkedin className="h-6 w-6" />
+                <span>LinkedIn</span>
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://github.com/Merionard/my-ae-front-end"
+                className="text-gray-400 hover:text-white flex items-center space-x-2"
+                target="_blank"
+              >
+                <Github className="h-6 w-6" />
+                <span>GitHub</span>
+              </a>
+            </div>
+            <div className="flex justify-center md:justify-end lg:justify-center space-x-4">
+              <img
+                src={reactLogo}
+                alt="React"
+                className="h-10"
+                title="React js"
+              />
+              <img
+                src={tailwindLogo}
+                alt="Tailwind CSS"
+                className="h-10"
+                title="Tailwind css"
+              />
+              <img
+                src={springLogo}
+                alt="Spring"
+                className="h-10"
+                title="Spring"
+              />
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
