@@ -29,7 +29,7 @@ export default function HomePage() {
       <div className="container mt-5">
         <Card>
           <CardHeader>
-            <CardTitle>Dashobard</CardTitle>
+            <CardTitle>Dashboard</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-4 gap-3">

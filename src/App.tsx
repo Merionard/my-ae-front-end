@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import { RootLayout } from "./RootLayout";
 import { ErrorPage } from "./error-page";
 import LogInPage from "./pages/login-page";
@@ -65,6 +69,10 @@ function App() {
     {
       path: "/login/:reason?",
       element: <LogInPage />,
+    },
+    {
+      path: "/",
+      element: <Navigate to="/home" />,
     },
   ]);
   const queryClient = new QueryClient();
