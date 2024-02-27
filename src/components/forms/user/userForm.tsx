@@ -20,7 +20,7 @@ import { useConnectedUserStore } from "@/features/store";
 import { User } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { TypeActiviteEnums, UserZod, userSchema } from "./userSchema";
@@ -33,17 +33,20 @@ export const UserForm = ({ user }: { user: User }) => {
       image: user.image != null ? user.image : "undefined",
       lastName: user.lastName != null ? user.lastName : undefined,
       activity: user.activity != null ? user.activity : undefined,
+      firstName: user.firstName != null ? user.firstName : undefined,
     },
   });
   const { setUser } = useConnectedUserStore();
 
   const navigate = useNavigate();
+  const client = useQueryClient();
   const updateUserMutation = useMutation({
     mutationFn: (user: UserZod) => updateUser(user),
     onSuccess: (data) => {
       toast.success("Données utilisateurs mises à jours avec succès!");
       setUser(data);
       navigate("/home");
+      client.invalidateQueries("user");
     },
   });
 
@@ -74,6 +77,19 @@ export const UserForm = ({ user }: { user: User }) => {
               <FormLabel>Nom</FormLabel>
               <FormControl>
                 <Input placeholder="Nom" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="firstName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Prénom</FormLabel>
+              <FormControl>
+                <Input placeholder="Prénom" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

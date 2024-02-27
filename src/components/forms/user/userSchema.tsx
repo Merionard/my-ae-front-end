@@ -5,6 +5,7 @@ export const userSchema = z.object({
   lastName: z.string().min(2),
   image: z.string().optional(),
   activity: z.string().optional(),
+  firstName: z.string().min(2),
 });
 
 export const TypeActiviteEnums = [
