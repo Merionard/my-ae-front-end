@@ -91,7 +91,7 @@ export default function CraTableRow({
   });
 
   const deleteWorkDayMutation = useMutation({
-    mutationFn: (id: string | null) => deleteWorkDay(id),
+    mutationFn: (id: string) => deleteWorkDay(id),
     onSuccess: () => {
       toast.success("suppression effectuée avec succès!");
       queryClient.invalidateQueries(["workPeriod", year, month]);
@@ -147,10 +147,8 @@ export default function CraTableRow({
         const workDayToDelete = line.workDays.find((w) =>
           isDateEqual(w.date, date)
         );
-        if (workDayToDelete) {
-          deleteWorkDayMutation.mutate(
-            workDayToDelete.id != null ? workDayToDelete.id.toString() : null
-          );
+        if (workDayToDelete && workDayToDelete.id) {
+          deleteWorkDayMutation.mutate(workDayToDelete.id.toString());
         }
       } else {
         const workDayToUpdate = line.workDays.find((w) =>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuthToken } from "./hooks";
 
 export const customFetchClient = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: import.meta.env.VITE_REACT_APP_API_HOST || "http://localhost:8080",
 });
 
 customFetchClient.interceptors.request.use(

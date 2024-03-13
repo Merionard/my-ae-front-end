@@ -54,11 +54,10 @@ export const addWorkDay = (workDay: WorkDay, workPeriodLineId: string) => {
   );
 };
 
-export const deleteWorkDay = (workDayId: string | null) => {
-  if (!workDayId) {
-    return new Promise<string>((resolve) => resolve("nothing to delete"));
-  }
-  return customFetchClient.delete(API_CRA_URL + `/workDay/${workDayId}`);
+export const deleteWorkDay = (workDayId: string) => {
+  return customFetchClient.delete<string>(
+    API_CRA_URL + `/workDay/${workDayId}`
+  );
 };
 
 export const updateWorkDay = (workDay: WorkDay) => {
