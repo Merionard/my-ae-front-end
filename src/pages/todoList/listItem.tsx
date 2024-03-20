@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Pencil, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { TaskItem } from "./taskItem";
@@ -44,7 +38,6 @@ export const ListItem = ({ todoList }: { todoList: TodoList }) => {
     undefined | string
   >(undefined);
   const [tasks, setTasks] = useState([...todoList.tasks]);
-  const [todoListTitle, setTodoListTitle] = useState(todoList.title);
   const queryClient = useQueryClient();
 
   const createUpdateTodoListMutation = useMutation(
@@ -91,40 +84,12 @@ export const ListItem = ({ todoList }: { todoList: TodoList }) => {
     setTasks(cloneTasks);
   };
 
-  const editTodoListTitle = async () => {
-    createUpdateTodoListMutation.mutate({ ...todoList, title: todoListTitle });
-  };
   return (
-    <Card key={todoList.title}>
+    <Card key={todoList.title} className="relative">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <div>
             <span>{todoList.title}</span>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Pencil className="inline ms-1 cursor-pointer h-5" />
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Maj titre liste</AlertDialogTitle>
-                  <AlertDialogDescription className="space-y-2">
-                    <div>
-                      <Label>Titre</Label>
-                      <Input
-                        placeholder="titre"
-                        onChange={(e) => setTodoListTitle(e.target.value)}
-                      />
-                    </div>
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Annuler</AlertDialogCancel>
-                  <AlertDialogAction onClick={editTodoListTitle}>
-                    Valider
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
           </div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -170,7 +135,7 @@ export const ListItem = ({ todoList }: { todoList: TodoList }) => {
           </AlertDialog>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="mb-5">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId={`droppable${todoList.title}`}>
             {(provided) => (
@@ -194,29 +159,28 @@ export const ListItem = ({ todoList }: { todoList: TodoList }) => {
           </Droppable>
         </DragDropContext>
       </CardContent>
+
       <AlertDialog>
-        <CardFooter className="flex justify-end">
-          <AlertDialogTrigger asChild>
-            <Button variant={"destructive"}>Supprimer</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Supprimer liste</AlertDialogTitle>
-              <AlertDialogDescription>
-                Vous etes sur le point de supprimer une liste avec toutes ses
-                taches associée.Confirmez vous?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Annuler</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => handleDeleteList(todoList.title)}
-              >
-                Supprimer
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </CardFooter>
+        <AlertDialogTrigger asChild>
+          <Button variant={"destructive"} className="absolute bottom-2 right-3">
+            Supprimer
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer liste</AlertDialogTitle>
+            <AlertDialogDescription>
+              Vous etes sur le point de supprimer une liste avec toutes ses
+              taches associée.Confirmez vous?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={() => handleDeleteList(todoList.title)}>
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
       </AlertDialog>
     </Card>
   );

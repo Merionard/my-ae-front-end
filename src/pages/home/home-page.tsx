@@ -32,7 +32,7 @@ export default function HomePage() {
             <CardTitle>Dashboard</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <Card>
                 <CardHeader>
                   <div className="flex justify-between items-center">
@@ -65,7 +65,7 @@ export default function HomePage() {
                   ))}
                 </CardContent>
               </Card>
-              <Card className="col-span-2">
+              <Card className="md:col-span-2">
                 <CardHeader>
                   <div className="flex justify-between items-center">
                     <h3 className="tracking-tight text-sm font-medium">
