@@ -17,6 +17,7 @@ import { EditInvoicePage } from "./pages/invoice/editInvoice-page";
 import TodoListPage from "./pages/todoList/todoList-page";
 import HomePage from "./pages/home/home-page";
 import MyAccountPage from "./pages/myAccount/myAccount-page";
+import ViewInvoice from "./pages/invoice/viewInvoice-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -39,6 +40,10 @@ function App() {
         {
           path: "/invoice/edit/:id",
           element: <EditInvoicePage />,
+        },
+        {
+          path: "/invoice/view/:id",
+          element: <ViewInvoice />,
         },
         {
           path: "/customers",
