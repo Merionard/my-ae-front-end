@@ -39,7 +39,7 @@ export const InvoiceSchema = z.object({
   totalTTC: z.number(),
   lines: z.array(InvoiceLineSchema),
   deletedLines: z.array(z.number()),
-  number: z.string(),
+  number: z.string().optional(),
 });
 
 export type Invoice = z.infer<typeof InvoiceSchema>;
