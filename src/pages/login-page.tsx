@@ -13,7 +13,7 @@ export default function LogInPage() {
   }, [reason]);
 
   return (
-    <div className="flex min-h-screen p-6">
+    <div className="flex flex-col md:flex-row min-h-screen p-6">
       <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
         <p className={`text-xl text-gray-800 md:text-3xl md:leading-normal`}>
           <strong>Bienvenue sur Mon Auto-entreprise! </strong>
@@ -21,7 +21,7 @@ export default function LogInPage() {
           auto-entreprise.
         </p>
       </div>
-      <div className="m-auto w-1/4">
+      <div className="w-full m-auto md:w-1/4">
         {reason === "unauthorized" && (
           <Alert className="mb-3">
             <AlertTriangle className="h-4 w-4" />
